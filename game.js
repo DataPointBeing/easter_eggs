@@ -7,6 +7,8 @@ PS.init = function(system, options ) {
     PS.audioLoad("fx_tada");
     PS.audioLoad("fx_blip");
 
+    PS.statusText("Crawl, Crypt, Crypt Crawl");
+
     GB.Clock.startLoop();
 
     GB.View.setViewGrid(16, 16, PS.COLOR_BLACK);

@@ -25,6 +25,8 @@ GB.Loader.addLoad(
             goodbye(thing) {
                 const ind = this.#world_objects.indexOf(thing);
                 this.#world_objects.splice(ind, 1);
+                //this.#removeInterests(ind);
+
                 this.#interests.splice(ind, 1);
             }
 
@@ -87,6 +89,17 @@ GB.Loader.addLoad(
                 this.#interests[index].push(event_type);
             }
 
+            #removeInterests(index) {
+                if(this.#interests[index]) {
+                    for (let interest of this.#interests[index]) {
+                        if (interest !== null) {
+                            const sub_ind = this.#event_categories[interest].indexOf(this.#world_objects[index]);
+                            this.#event_categories[interest].splice(sub_ind, 1);
+                        }
+                    }
+                }
+            }
+
             addAura(x, y, func) {
                 if(!this.#aura_functions[[x, y]]) {
                     this.#aura_functions[[x, y]] = [func];
@@ -112,8 +125,12 @@ GB.Loader.addLoad(
             sendEvent(event) {
                 let interested = this.#event_categories[event.getType()];
 
+                /*if(event.getType() === "button_press") {
+                    PS.debug(interested.length);
+                }*/
+
                 if (interested) {
-                    for (let thing of this.#world_objects) {
+                    for (let thing of interested) {
                         if (thing != null) {
                             thing.doEvent(event);
                         }

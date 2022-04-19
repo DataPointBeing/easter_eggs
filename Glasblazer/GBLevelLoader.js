@@ -8,6 +8,7 @@ GB.Loader.addLoad(
 
             static #backgrounds = {};
             static #collisions = {};
+            static #connections = {};
 
             static done_loading = 0;
             static needed = 0;
@@ -25,7 +26,7 @@ GB.Loader.addLoad(
                 GBLevelLoader.nextOrderOfBusiness = onComplete;
                 for(let lev of levels) {
                     if(lev !== null){
-                        GBLevelLoader.needed += 2;
+                        GBLevelLoader.needed += 3;
                         let bg = function(imageData){
                             GBLevelLoader.#backgrounds[lev] = imageData;
                             GBLevelLoader.dunzo();
@@ -34,14 +35,19 @@ GB.Loader.addLoad(
                             GBLevelLoader.#collisions[lev] = imageData;
                             GBLevelLoader.dunzo();
                         }
+                        let cnx = function(imageData){
+                            GBLevelLoader.#connections[lev] = imageData;
+                            GBLevelLoader.dunzo();
+                        }
 
                         PS.imageLoad(GBLevelLoader.level_path + lev + ".gif", bg);
                         PS.imageLoad(GBLevelLoader.level_path + lev + "_OBJECTS.gif", col);
+                        PS.imageLoad(GBLevelLoader.level_path + lev + "_CONNECTIONS.gif", cnx);
                     }
                 }
             }
 
-            makeItem(x, y, color) {
+            makeItem(x, y, color, connection) {
                 switch(color) {
                     case 0xFF0000:
                         new Doorway(
@@ -75,7 +81,13 @@ GB.Loader.addLoad(
                         new DeathZone({x:x,y:y}, {x:x,y:y});
                         break;
                     case 0x00FF00:
-                        new Button(x, y);
+                        new Button(x, y, connection);
+                        break;
+                    case 0x00FFFF:
+                        new MobileWall(x, y, connection);
+                        break;
+                    case 0xFFAA00:
+                        new VictoryZone({x:x, y:y}, {x:x+1, y:y});
                         break;
                 }
             }
@@ -83,6 +95,7 @@ GB.Loader.addLoad(
             buildLevel(level) {
                 const coll = GBLevelLoader.#collisions[level];
                 const bg = GBLevelLoader.#backgrounds[level];
+                const cnx = GBLevelLoader.#connections[level];
 
                 GB.World.setBounds(coll.width, coll.height);
 
@@ -99,8 +112,9 @@ GB.Loader.addLoad(
                         bg_colors[i_y].push(bg_c);
 
                         const b_c = PS.makeRGB(coll.data[k_x], coll.data[k_x+1], coll.data[k_x+2]);
+                        const b_cnx = PS.makeRGB(cnx.data[k_x], cnx.data[k_x+1], cnx.data[k_x+2]);
                         coll_bools[i_y].push(b_c === 0xFFFFFF);
-                        this.makeItem(i_x, i_y, b_c);
+                        this.makeItem(i_x, i_y, b_c, b_cnx);
                     }
                 }
 

@@ -24,7 +24,7 @@ GB.Loader.addLoad(
 
                 GB.World.hello(this);
 
-                this.populate(this.#position);
+                //this.populate(this.#position);
             }
 
             setGridPlane(new_plane) {

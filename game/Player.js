@@ -62,7 +62,7 @@ class Player extends GB.Object {
             this.spacebar_down = true;
             for(let x = -1; x < 2; x++){
                 for(let y = -1; y < 2; y++){
-                    if(x === 0 && y === 0) {
+                    if(Math.abs(x) === Math.abs(y)) {
                         continue;
                     }
 
