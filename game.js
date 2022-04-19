@@ -25,10 +25,6 @@ function levelOne() {
     GB.LevelLoader.buildLevel("easter_eggs_level");
 }
 
-function test(){
-    PS.debug("perfect");
-}
-
 PS.keyDown = function( key, shift, ctrl, options ) {
     GB.Input.processInput(key, true);
 };
