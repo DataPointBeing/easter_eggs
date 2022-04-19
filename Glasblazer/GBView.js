@@ -24,8 +24,8 @@ GB.Loader.addLoad(
                     new_pos_conv = new_pos;
                 }
 
-                if(new_pos_conv !== this.#view_position) {
-                    this.#doMove(new_pos);
+                if(!GB.Utility.positionsEqual(new_pos_conv, this.#view_position)) {
+                    this.#doMove(new_pos_conv);
                 }
             }
 
@@ -53,6 +53,10 @@ GB.Loader.addLoad(
 
             getHeight() {
                 return PS.gridSize().height;
+            }
+
+            worldInView(pos) {
+                return this.inView(GB.Utility.worldToView(pos));
             }
 
             inView(pos) {

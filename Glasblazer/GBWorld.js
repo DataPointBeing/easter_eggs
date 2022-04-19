@@ -7,6 +7,7 @@ GB.Loader.addLoad(
 
             #map_colors = [];
             #map_collision = [];
+            #aura_functions = {};
 
             #world_objects = [];
             #interests = [];
@@ -27,7 +28,24 @@ GB.Loader.addLoad(
                 this.#interests.splice(ind, 1);
             }
 
+            drawBackground() {
+                for(let y = 0; y < GB.View.getHeight(); y++) {
+                    for(let x = 0; x < GB.View.getWidth(); x++) {
+                        const bg_pos = GB.Utility.viewToWorld({x: x, y: y});
+                        if(this.inBounds(bg_pos)) {
+                            PS.bgAlpha(x, y, PS.ALPHA_OPAQUE);
+                            PS.bgColor(x, y, this.#map_colors[bg_pos.y][bg_pos.x]);
+                        }
+                    }
+                }
+
+                PS.alpha(PS.ALL, PS.ALL, PS.COLOR_WHITE);
+                PS.alpha(PS.ALL, PS.ALL, PS.ALPHA_TRANSPARENT);
+            }
+
             populateAll() {
+                this.drawBackground();
+
                 for(let thing of this.#world_objects) {
                     if(thing !== null) {
                         thing.drawToView();
@@ -64,6 +82,28 @@ GB.Loader.addLoad(
                 }
 
                 this.#interests[index].push(event_type);
+            }
+
+            addAura(x, y, func) {
+                if(!this.#aura_functions[[x, y]]) {
+                    this.#aura_functions[[x, y]] = [func];
+                }
+                else {
+                    this.#aura_functions[[x, y]].push(func);
+                }
+            }
+
+            aurasAt(x, y) {
+                return this.#aura_functions[[x, y]];
+            }
+
+            clearAura(x, y, func) {
+                const ind = this.#aura_functions[[x, y]].indexOf(func);
+                this.#aura_functions.splice(ind, 1);
+
+                if(this.#aura_functions[[x, y]] === []) {
+                    delete this.#aura_functions[[x, y]];
+                }
             }
 
             sendEvent(event) {
@@ -123,6 +163,21 @@ GB.Loader.addLoad(
                 return y_p >= 0 && y_p < this.getBoundsX();
             }
 
+            collision(x, y) {
+                const to_vw = GB.Utility.worldToView({x: x, y: y});
+                const x_bd = to_vw.x;
+                const y_bd = to_vw.y;
+                return !this.inBounds({x: x, y: y}) || this.#map_collision[y][x] || (GB.View.inView({x: x_bd, y: y_bd}) && PS.data(x_bd, y_bd) === 1);
+            }
+
+            setCollisionArray(coll) {
+                this.#map_collision = coll;
+            }
+
+            setBackgroundArray(bg) {
+                this.#map_colors = bg;
+            }
+
 
             // A variation on the singleton pattern
             constructor() {
@@ -137,13 +192,6 @@ GB.Loader.addLoad(
                     GB.World = new GBWorld();
                     this.#initialized = true;
                 }
-            }
-
-            collision(x, y) {
-                const to_vw = GB.Utility.worldToView({x: x, y: y});
-                const x_bd = to_vw.x;
-                const y_bd = to_vw.y;
-                return !this.inBounds({x: x, y: y}) || this.#map_collision[y][x] || (GB.View.inView({x: x_bd, y: y_bd}) && PS.data(x_bd, y_bd) === 1);
             }
         }
 

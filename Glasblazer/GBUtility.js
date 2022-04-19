@@ -32,6 +32,10 @@ GB.Loader.addLoad(
                 return {x: x + GB.View.getPositionX(), y: y + GB.View.getPositionY()};
             }
 
+            static positionsEqual(pos1, pos2) {
+                return pos1.x === pos2.x && pos1.y === pos2.y;
+            }
+
             // Static-ish class
             constructor() {
                 throw "Attempt to instantiate " + this.constructor.name;

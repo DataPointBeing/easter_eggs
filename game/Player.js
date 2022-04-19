@@ -25,7 +25,7 @@ class Player extends GB.Object {
     }
 
     populate(pos) {
-        PS.color(pos.x, pos.y, PS.COLOR_RED);
+        PS.color(pos.x, pos.y, 0x174955);
         PS.alpha(pos.x, pos.y, PS.ALPHA_OPAQUE);
         PS.radius(pos.x, pos.y, 20);
         PS.data(pos.x, pos.y, 1);
