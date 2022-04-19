@@ -60,7 +60,22 @@ class Player extends GB.Object {
     #tryInteract(down) {
         if(down && !this.spacebar_down) {
             this.spacebar_down = true;
-            // interact...
+            for(let x = -1; x < 2; x++){
+                for(let y = -1; y < 2; y++){
+                    if(x === 0 && y === 0) {
+                        continue;
+                    }
+
+                    const w_pos = {x: super.getPosition().x + x, y: super.getPosition().y + y};
+                    const v_pos = GB.Utility.worldToView(w_pos);
+                    if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+                        const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
+                        if(thing !== null) {
+                            thing.doEvent(new InteractEvent());
+                        }
+                    }
+                }
+            }
         }
         else if(!down) {
             this.spacebar_down = false;

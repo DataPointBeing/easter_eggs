@@ -74,6 +74,9 @@ GB.Loader.addLoad(
                     case 0xFF00FF:
                         new DeathZone({x:x,y:y}, {x:x,y:y});
                         break;
+                    case 0x00FF00:
+                        new Button(x, y);
+                        break;
                 }
             }
 

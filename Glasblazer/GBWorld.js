@@ -3,7 +3,7 @@ GB.Loader.addLoad(
 
 
         class GBWorld {
-            static #master_id = 1;
+            static #master_id = 2;
 
             #map_colors = [];
             #map_collision = [];
@@ -69,7 +69,7 @@ GB.Loader.addLoad(
                 if (!this.#event_categories[event_type]) {
                     this.#event_categories[event_type] = [thing];
                     this.#appendInterest(thing, event_type);
-                } else if (!this.#event_categories[event_type].contains(thing)) {
+                } else if (!this.#event_categories[event_type].includes(thing)) {
                     this.#event_categories[event_type].push(thing);
                     this.#appendInterest(thing, event_type);
                 }
@@ -170,7 +170,7 @@ GB.Loader.addLoad(
                 const to_vw = GB.Utility.worldToView({x: x, y: y});
                 const x_bd = to_vw.x;
                 const y_bd = to_vw.y;
-                return !this.inBounds({x: x, y: y}) || this.#map_collision[y][x] || (GB.View.inView({x: x_bd, y: y_bd}) && PS.data(x_bd, y_bd) === 1);
+                return !this.inBounds({x: x, y: y}) || this.#map_collision[y][x] || (GB.View.inView({x: x_bd, y: y_bd}) && PS.data(x_bd, y_bd) > 0);
             }
 
             setCollisionArray(coll) {
@@ -179,6 +179,16 @@ GB.Loader.addLoad(
 
             setBackgroundArray(bg) {
                 this.#map_colors = bg;
+            }
+
+            objectFromID(id) {
+                for(let thing of this.#world_objects) {
+                    if(thing !== null && thing.getID() === id) {
+                        return thing;
+                    }
+                }
+
+                return null;
             }
 
 

@@ -5,6 +5,7 @@ PS.init = function(system, options ) {
 
     PS.audioLoad("fx_hoot");
     PS.audioLoad("fx_tada");
+    PS.audioLoad("fx_blip");
 
     GB.Clock.startLoop();
 
