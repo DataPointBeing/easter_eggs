@@ -1,11 +1,11 @@
 "use strict"; // Do NOT remove this directive!
 
 PS.init = function(system, options ) {
-    PS.gridColor(PS.COLOR_BLUE);
+    PS.keyRepeat(true, 2, 2);
 
     GB.Clock.startLoop();
 
-    GB.View.setViewGrid(5, 5, PS.COLOR_YELLOW);
+    GB.View.setViewGrid(6, 5, PS.COLOR_YELLOW);
     GB.World.setBounds(5, 5);
 
     let haheeho = new Player();

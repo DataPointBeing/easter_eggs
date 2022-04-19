@@ -1,14 +1,25 @@
 class Player extends GB.Object {
+
+    move_delay = 4;
+
+    ticks_since_last_move_h = this.move_delay;
+    ticks_since_last_move_v = this.move_delay;
+
     constructor() {
         super("hero");
 
         GB.World.registerInterest(this, GB.InputEvent);
+        GB.World.registerInterest(this, GB.TickEvent);
     }
 
     doEvent(event) {
         switch(event.getType()) {
             case GB.InputEvent.evType():
-                this.#tryMove(event.getInput());
+                this.#doAction(event.getInput());
+                break;
+            case GB.TickEvent.evType():
+                this.ticks_since_last_move_h++;
+                this.ticks_since_last_move_v++;
                 break;
         }
     }
@@ -27,23 +38,45 @@ class Player extends GB.Object {
         PS.data(pos.x, pos.y, null);
     }
 
-    #tryMove(dir){
-        switch(dir){
+    #doAction(key){
+        switch(key){
             case GB.InputType.UP:
-                super.setPositionY(super.getPositionY() - 1);
-                break;
             case GB.InputType.DOWN:
-                super.setPositionY(super.getPositionY() + 1);
+                this.#tryMove(key, true);
                 break;
             case GB.InputType.LEFT:
-                super.setPositionX(super.getPositionX() - 1);
-                break;
             case GB.InputType.RIGHT:
-                super.setPositionX(super.getPositionX() + 1);
+                this.#tryMove(key, false);
                 break;
             case GB.InputType.SPACE:
                 // interact goes here
-                break;
+                return;
+        }
+    }
+
+    #tryMove(dir, vert){
+        if((vert? this.ticks_since_last_move_v : this.ticks_since_last_move_h) >= this.move_delay) {
+            switch (dir) {
+                case GB.InputType.UP:
+                    super.setPositionY(super.getPositionY() - 1);
+                    break;
+                case GB.InputType.DOWN:
+                    super.setPositionY(super.getPositionY() + 1);
+                    break;
+                case GB.InputType.LEFT:
+                    super.setPositionX(super.getPositionX() - 1);
+                    break;
+                case GB.InputType.RIGHT:
+                    super.setPositionX(super.getPositionX() + 1);
+                    break;
+            }
+
+            if(vert) {
+                this.ticks_since_last_move_v = 0;
+            }
+            else {
+                this.ticks_since_last_move_h = 0;
+            }
         }
     }
 }

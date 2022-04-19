@@ -65,7 +65,7 @@ GB.Loader.addLoad(
                     new_pos_conv = new_pos;
                 }
 
-                if(new_pos_conv !== this.#position && GB.World.inBounds(new_pos_conv)) {
+                if(new_pos_conv !== this.#position && !GB.World.collision(new_pos.x, new_pos.y)) {
                     this.#dePopulateObject();
                     this.#position = new_pos;
                     this.#populateObject();
@@ -73,7 +73,7 @@ GB.Loader.addLoad(
             }
 
             setPositionX(new_x) {
-                if(new_x !== this.#position.x && GB.World.inBoundsX(new_x)) {
+                if(new_x !== this.#position.x && !GB.World.collision(new_x, this.#position.y)) {
                     this.#dePopulateObject();
                     this.#position.x = new_x;
                     this.#populateObject();
@@ -81,7 +81,7 @@ GB.Loader.addLoad(
             }
 
             setPositionY(new_y) {
-                if(new_y !== this.#position.y && GB.World.inBoundsY(new_y)) {
+                if(new_y !== this.#position.y && !GB.World.collision(this.#position.x, new_y)) {
                     this.#dePopulateObject();
                     this.#position.y = new_y;
                     this.#populateObject();

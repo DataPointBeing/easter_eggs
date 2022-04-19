@@ -5,6 +5,9 @@ GB.Loader.addLoad(
         class GBWorld {
             static #master_id = 1;
 
+            #map_colors = [];
+            #map_collision = [];
+
             #world_objects = [];
             #interests = [];
             #bounds = {x: 1, y: 1};
@@ -77,6 +80,17 @@ GB.Loader.addLoad(
 
             setBounds(x_dim, y_dim) {
                 this.#bounds = {x: x_dim, y: y_dim};
+
+                this.#map_colors = [];
+                this.#map_collision = [];
+                for(let i_y = 0; i_y < y_dim; i_y++) {
+                    this.#map_colors.push([]);
+                    this.#map_collision.push([]);
+                    for(let i_x = 0; i_x < x_dim; i_x++) {
+                        this.#map_colors[i_y].push(PS.COLOR_WHITE);
+                        this.#map_collision[i_y].push(false);
+                    }
+                }
             }
 
             getBoundsX() {
@@ -123,6 +137,13 @@ GB.Loader.addLoad(
                     GB.World = new GBWorld();
                     this.#initialized = true;
                 }
+            }
+
+            collision(x, y) {
+                const to_vw = GB.Utility.worldToView({x: x, y: y});
+                const x_bd = to_vw.x;
+                const y_bd = to_vw.y;
+                return !this.inBounds({x: x, y: y}) || this.#map_collision[y][x] || (GB.View.inView({x: x_bd, y: y_bd}) && PS.data(x_bd, y_bd) === 1);
             }
         }
 
