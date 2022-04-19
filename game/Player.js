@@ -2,6 +2,9 @@ class Player extends GB.Object {
 
     move_delay = 4;
 
+    spacebar_down = false;
+
+
     ticks_since_last_move_h = this.move_delay;
     ticks_since_last_move_v = this.move_delay;
 
@@ -15,7 +18,7 @@ class Player extends GB.Object {
     doEvent(event) {
         switch(event.getType()) {
             case GB.InputEvent.evType():
-                this.#doAction(event.getInput());
+                this.#doAction(event.getInput(), event.getIsDown());
                 break;
             case GB.TickEvent.evType():
                 this.ticks_since_last_move_h++;
@@ -38,24 +41,34 @@ class Player extends GB.Object {
         PS.data(pos.x, pos.y, null);
     }
 
-    #doAction(key){
+    #doAction(key, down){
         switch(key){
             case GB.InputType.UP:
             case GB.InputType.DOWN:
-                this.#tryMove(key, true);
+                this.#tryMove(key, true, down);
                 break;
             case GB.InputType.LEFT:
             case GB.InputType.RIGHT:
-                this.#tryMove(key, false);
+                this.#tryMove(key, false, down);
                 break;
             case GB.InputType.SPACE:
-                // interact goes here
+                this.#tryInteract(down);
                 return;
         }
     }
 
-    #tryMove(dir, vert){
-        if((vert? this.ticks_since_last_move_v : this.ticks_since_last_move_h) >= this.move_delay) {
+    #tryInteract(down) {
+        if(down && !this.spacebar_down) {
+            this.spacebar_down = true;
+            // interact...
+        }
+        else if(!down) {
+            this.spacebar_down = false;
+        }
+    }
+
+    #tryMove(dir, vert, down){
+        if(down && ((vert? this.ticks_since_last_move_v : this.ticks_since_last_move_h) >= this.move_delay)) {
             switch (dir) {
                 case GB.InputType.UP:
                     super.setPositionY(super.getPositionY() - 1);

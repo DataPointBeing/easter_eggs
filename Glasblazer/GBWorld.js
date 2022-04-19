@@ -32,9 +32,12 @@ GB.Loader.addLoad(
                 for(let y = 0; y < GB.View.getHeight(); y++) {
                     for(let x = 0; x < GB.View.getWidth(); x++) {
                         const bg_pos = GB.Utility.viewToWorld({x: x, y: y});
+                        PS.bgAlpha(x, y, PS.ALPHA_OPAQUE);
                         if(this.inBounds(bg_pos)) {
-                            PS.bgAlpha(x, y, PS.ALPHA_OPAQUE);
                             PS.bgColor(x, y, this.#map_colors[bg_pos.y][bg_pos.x]);
+                        }
+                        else {
+                            PS.bgColor(x, y, GB.View.getBg());
                         }
                     }
                 }

@@ -4,6 +4,7 @@ GB.Loader.addLoad(
 
         class GBView {
             #view_position = {x: 0, y: 0};
+            #default_bg = PS.COLOR_BLACK;
 
             setViewGrid(x_dim, y_dim, bg) {
                 PS.gridSize(x_dim, y_dim);
@@ -73,9 +74,14 @@ GB.Loader.addLoad(
                 return x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight();
             }
 
+            getBg() {
+                return this.#default_bg;
+            }
+
             setBg(bg) {
                 PS.bgAlpha(PS.ALL, PS.ALL, PS.ALPHA_OPAQUE);
                 PS.bgColor(PS.ALL, PS.ALL, bg);
+                this.#default_bg = bg;
             }
 
             removeBg() {

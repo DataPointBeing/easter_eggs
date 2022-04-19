@@ -56,7 +56,23 @@ GB.Loader.addLoad(
                             {x:x+1-(GB.View.getWidth()/2), y:y+2},
                             {x:x+1-(GB.View.getWidth()/2), y:y+1-GB.View.getHeight()}
                         );
-                        PS.debug("spawned")
+                        break;
+                    case 0x0000FF:
+                        new Doorway(
+                            {x:x,y:y},
+                            {x:x+1,y:y+1},
+                            {y:y+1-(GB.View.getHeight()/2), x:x+1-GB.View.getWidth()},
+                            {y:y+1-(GB.View.getHeight()/2), x:x+2}
+                        );
+                        new Doorway(
+                            {x:x+1,y:y},
+                            {x:x+2,y:y+1},
+                            {x:x+2, y:y+1-(GB.View.getHeight()/2)},
+                            {x:x+1-GB.View.getWidth(), y:y+1-(GB.View.getHeight()/2)}
+                        );
+                        break;
+                    case 0xFF00FF:
+                        new DeathZone({x:x,y:y}, {x:x,y:y});
                         break;
                 }
             }
@@ -87,6 +103,9 @@ GB.Loader.addLoad(
 
                 GB.World.setBackgroundArray(bg_colors);
                 GB.World.setCollisionArray(coll_bools);
+
+                let hero = new Player();
+                hero.setPosition({x: 25, y: 59});
 
                 GB.World.dePopulateAll();
                 GB.World.populateAll();
