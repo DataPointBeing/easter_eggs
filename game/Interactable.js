@@ -2,7 +2,7 @@ class Interactable extends GB.Object {
 
     constructor(type) {
         super(type);
-        GB.World.registerInterest(this, InteractEvent)
+        GB.World.registerInterest(this, InteractEvent);
     }
 
     populate(pos) {
