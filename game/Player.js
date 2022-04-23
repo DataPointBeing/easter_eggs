@@ -8,11 +8,13 @@ class Player extends GB.Object {
     ticks_since_last_move_h = this.move_delay;
     ticks_since_last_move_v = this.move_delay;
 
-    constructor() {
+    constructor(x = 0, y = 0) {
         super("hero");
 
         GB.World.registerInterest(this, GB.InputEvent);
         GB.World.registerInterest(this, GB.TickEvent);
+
+        super.setPosition({x:x, y:y});
     }
 
     doEvent(event) {

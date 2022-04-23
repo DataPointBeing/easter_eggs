@@ -11,6 +11,8 @@ GB.Loader.addLoad(
 
             #timer_fn = function () {
                 GBClock.#ticks_elapsed++;
+                GB.World.throwAwayQueuedThings();
+
                 GB.World.sendEvent(new GB.TickEvent(GBClock.#ticks_elapsed));
             }
 

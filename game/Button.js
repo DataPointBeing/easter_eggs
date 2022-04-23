@@ -6,7 +6,6 @@ class Button extends Interactable {
         super("button");
         super.setPosition({x:x,y:y});
         this.#frequency = cnx;
-        GB.World.registerInterest(this, InteractEvent);
     }
 
     populate(pos) {
@@ -28,10 +27,10 @@ class Button extends Interactable {
     }
 
     handleInteract() {
-        if(!this.#interacted) {
+        //if(!this.#interacted) {
             PS.audioPlay("fx_blip", {volume: 0.2});
             GB.World.sendEvent(new ButtonEvent(this.#frequency));
             this.#interacted = true;
-        }
+        //}
     }
 }

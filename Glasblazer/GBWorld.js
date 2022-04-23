@@ -13,6 +13,8 @@ GB.Loader.addLoad(
             #interests = [];
             #bounds = {x: 1, y: 1};
 
+            #queued_for_deletion = [];
+
             #event_categories = {};
 
             hello(thing) {
@@ -24,8 +26,9 @@ GB.Loader.addLoad(
 
             goodbye(thing) {
                 const ind = this.#world_objects.indexOf(thing);
+
+                this.#removeInterests(ind);
                 this.#world_objects.splice(ind, 1);
-                //this.#removeInterests(ind);
 
                 this.#interests.splice(ind, 1);
             }
@@ -46,6 +49,26 @@ GB.Loader.addLoad(
 
                 PS.alpha(PS.ALL, PS.ALL, PS.COLOR_WHITE);
                 PS.alpha(PS.ALL, PS.ALL, PS.ALPHA_TRANSPARENT);
+            }
+
+            markForDelete(thing) {
+                if(!this.#queued_for_deletion.includes(thing)) {
+                    this.#queued_for_deletion.push(thing);
+                }
+
+                // Genuine apologies to Professor Claypool for underestimating this function.
+                // Not using it *breaks everything* and I learned that the hard way.
+
+            }
+
+            throwAwayQueuedThings() {
+                for(let thing of this.#queued_for_deletion) {
+                    if(thing !== null) {
+                        thing.deleteObject();
+                    }
+                }
+
+                this.#queued_for_deletion = [];
             }
 
             populateAll() {
@@ -74,6 +97,9 @@ GB.Loader.addLoad(
                 } else if (!this.#event_categories[event_type].includes(thing)) {
                     this.#event_categories[event_type].push(thing);
                     this.#appendInterest(thing, event_type);
+                }
+                else {
+                    PS.debug("nope");
                 }
             }
 
@@ -124,10 +150,6 @@ GB.Loader.addLoad(
 
             sendEvent(event) {
                 let interested = this.#event_categories[event.getType()];
-
-                /*if(event.getType() === "button_press") {
-                    PS.debug(interested.length);
-                }*/
 
                 if (interested) {
                     for (let thing of interested) {

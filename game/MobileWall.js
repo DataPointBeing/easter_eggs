@@ -15,7 +15,7 @@ class MobileWall extends GB.Object {
         switch(event.getType()) {
             case ButtonEvent.evType():
                 if(event.getFrequency() === this.#frequency) {
-                    super.deleteObject();
+                    GB.World.markForDelete(this);
                     //PS.debug("OKAY! (I'm " + this.#frequency + "! That's " + event.getFrequency() + ".)\n")
                 }
                 else{
