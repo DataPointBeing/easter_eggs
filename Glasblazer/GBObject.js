@@ -179,9 +179,9 @@ GB.Loader.addLoad(
                     PS.gridPlane(this.#plane);
 
                     this.dePopulate(v_pos);
-                    #overridePop(v_pos);
+                    this.#overridePop(v_pos);
                     this.populate(v_pos);
-                    #overrideDePop(v_pos);
+                    this.#overrideDePop(v_pos);
 
                     PS.gridPlane(PS.DEFAULT);
                 }
@@ -232,7 +232,7 @@ GB.Loader.addLoad(
 
             #overridePop(pos) {
                 for(let over of this.#pop_overrides) {
-                    over();
+                    over(pos);
                 }
             }
 
@@ -242,7 +242,7 @@ GB.Loader.addLoad(
 
             #overrideDePop(pos) {
                 for(let over of this.#dePop_overrides) {
-                    over();
+                    over(pos);
                 }
             }
 
