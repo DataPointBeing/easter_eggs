@@ -12,7 +12,12 @@ GB.Loader.addLoad(
 
             #draw_from_outside;
 
+            #draw_overridden;
+
             #deleted;
+
+            #pop_overrides = [];
+            #dePop_overrides = [];
 
             constructor(type) {
                 this.#type = type;
@@ -21,6 +26,8 @@ GB.Loader.addLoad(
                 this.#plane = 0;
                 this.#draw_from_outside = false;
                 this.#triggers_auras = true;
+
+                this.#draw_overridden = false;
 
                 GB.World.hello(this);
 
@@ -41,6 +48,14 @@ GB.Loader.addLoad(
 
             getDrawOutside() {
                 return this.#draw_from_outside;
+            }
+
+            setDrawOverridden(is_it) {
+                this.#draw_overridden = is_it;
+            }
+
+            getDrawOverridden() {
+                return this.#draw_overridden;
             }
 
             setTriggersAuras(well_does_it) {
@@ -160,10 +175,14 @@ GB.Loader.addLoad(
 
             refresh() {
                 const v_pos = GB.Utility.worldToView(this.#position);
-                if(GB.View.inView(v_pos) || this.#draw_from_outside) {
+                if((GB.View.inView(v_pos) || this.#draw_from_outside) && !this.#draw_overridden) {
                     PS.gridPlane(this.#plane);
+
                     this.dePopulate(v_pos);
+                    this.#overridePop(v_pos);
                     this.populate(v_pos);
+                    this.#overrideDePop(v_pos);
+
                     PS.gridPlane(PS.DEFAULT);
                 }
             }
@@ -178,18 +197,20 @@ GB.Loader.addLoad(
 
             #populateObject(){
                 const v_pos = GB.Utility.worldToView(this.#position);
-                if(GB.View.inView(v_pos) || this.#draw_from_outside) {
+                if((GB.View.inView(v_pos) || this.#draw_from_outside) && !this.#draw_overridden) {
                     PS.gridPlane(this.#plane);
                     this.populate(v_pos);
+                    this.#overridePop(v_pos);
                     PS.gridPlane(PS.DEFAULT);
                 }
             }
 
             #dePopulateObject(){
                 const v_pos = GB.Utility.worldToView(this.#position);
-                if(GB.View.inView(v_pos) || this.#draw_from_outside) {
+                if((GB.View.inView(v_pos) || this.#draw_from_outside) && !this.#draw_overridden) {
                     PS.gridPlane(this.#plane);
                     this.dePopulate(v_pos);
+                    this.#overrideDePop(v_pos);
                     PS.gridPlane(PS.DEFAULT);
                 }
             }
@@ -203,6 +224,26 @@ GB.Loader.addLoad(
 
             populate(pos) {
 
+            }
+
+            addPopOverride(over) {
+                this.#pop_overrides.push(over);
+            }
+
+            #overridePop(pos) {
+                for(let over of this.#pop_overrides) {
+                    over(pos);
+                }
+            }
+
+            addDePopOverride(over) {
+                this.#dePop_overrides.push(over);
+            }
+
+            #overrideDePop(pos) {
+                for(let over of this.#dePop_overrides) {
+                    over(pos);
+                }
             }
 
             isDeleted() {
