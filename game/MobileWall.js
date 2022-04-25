@@ -3,29 +3,26 @@ class MobileWall extends GB.Object {
     #frequency;
     #toggleFn;
 
-    #active = true;
+    #active;
 
     constructor(x, y, freq, can_come_back = true, start_active = true) {
         super("slide_barrier");
-        super.setPosition({x:x, y:y});
+        this.setPosition({x:x, y:y});
+
+        this.#active = start_active;
 
         this.#frequency = freq;
         if(can_come_back) {
             this.#toggleFn = function() {
-                if(this.#active) {
+                this.#active = !this.#active;
 
-                }
-                else {
-
-                }
-
-                super.refresh();
-            }
+                this.refresh();
+            };
         }
         else {
             this.#toggleFn = function() {
                 GB.World.markForDelete(this);
-            }
+            };
         }
 
         GB.World.registerInterest(this, ButtonEvent);
@@ -43,9 +40,9 @@ class MobileWall extends GB.Object {
 
     populate(pos) {
         PS.color(pos.x, pos.y, 0x636363);
-        PS.alpha(pos.x, pos.y, PS.ALPHA_OPAQUE);
+        PS.alpha(pos.x, pos.y, this.#active? PS.ALPHA_OPAQUE : PS.ALPHA_TRANSPARENT);
         PS.radius(pos.x, pos.y, 10);
-        PS.data(pos.x, pos.y, 1);
+        PS.data(pos.x, pos.y, this.#active? 1 : null);
     }
 
     dePopulate(pos) {
