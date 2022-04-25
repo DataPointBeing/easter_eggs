@@ -53,7 +53,7 @@ GB.Loader.addLoad(
                 GBLevelLoader.item_types[color] = makerFn;
             }
 
-            #makeItem(x, y, color, connection) {
+            static #makeItem(x, y, color, connection) {
                 const item = GBLevelLoader.item_types[color];
 
                 if(item) {
@@ -83,7 +83,7 @@ GB.Loader.addLoad(
                         const b_c = PS.makeRGB(coll.data[k_x], coll.data[k_x+1], coll.data[k_x+2]);
                         const b_cnx = PS.makeRGB(cnx.data[k_x], cnx.data[k_x+1], cnx.data[k_x+2]);
                         coll_bools[i_y].push(b_c === 0xFFFFFF);
-                        this.#makeItem(i_x, i_y, b_c, b_cnx);
+                        GBLevelLoader.#makeItem(i_x, i_y, b_c, b_cnx);
                     }
                 }
 

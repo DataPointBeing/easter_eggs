@@ -65,6 +65,10 @@ function initItemMakers() {
         new Button(x, y, cxn);
     });
 
+    GB.LevelLoader.registerItem(0x007400, function(x, y, cxn) {
+        new Invisibility(new Button(x, y, cxn));
+    });
+
     GB.LevelLoader.registerItem(0x00FFFF, function(x, y, cxn) {
         new MobileWall(x, y, cxn);
     });
