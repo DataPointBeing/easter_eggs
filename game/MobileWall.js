@@ -1,12 +1,32 @@
 class MobileWall extends GB.Object {
 
     #frequency;
+    #toggleFn;
 
-    constructor(x, y, freq) {
+    #active = true;
+
+    constructor(x, y, freq, can_come_back = true, start_active = true) {
         super("slide_barrier");
         super.setPosition({x:x, y:y});
 
         this.#frequency = freq;
+        if(can_come_back) {
+            this.#toggleFn = function() {
+                if(this.#active) {
+
+                }
+                else {
+
+                }
+
+                super.refresh();
+            }
+        }
+        else {
+            this.#toggleFn = function() {
+                GB.World.markForDelete(this);
+            }
+        }
 
         GB.World.registerInterest(this, ButtonEvent);
     }
@@ -15,11 +35,7 @@ class MobileWall extends GB.Object {
         switch(event.getType()) {
             case ButtonEvent.evType():
                 if(event.getFrequency() === this.#frequency) {
-                    GB.World.markForDelete(this);
-                    //PS.debug("OKAY! (I'm " + this.#frequency + "! That's " + event.getFrequency() + ".)\n")
-                }
-                else{
-                    //PS.debug("not it. (I'm " + this.#frequency + "! That's " + event.getFrequency() + ".)\n")
+                    this.#toggleFn();
                 }
                 break;
         }

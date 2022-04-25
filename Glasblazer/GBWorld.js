@@ -216,6 +216,10 @@ GB.Loader.addLoad(
                 this.#map_collision = coll;
             }
 
+            setCollisionSquare(x, y, is_coll) {
+                this.#map_collision[y][x] = is_coll;
+            }
+
             setBackgroundArray(bg) {
                 this.#map_colors = bg;
             }

@@ -12,10 +12,9 @@ PS.init = function(system, options) {
     GB.Clock.startLoop();
 
     GB.View.setViewGrid(16, 16, PS.COLOR_BLACK);
-    GB.View.setPosition({x: 18, y: 52});
 
     initItemMakers();
-    GB.LevelLoader.loadTheseLevels(["easter_eggs_level"], levelOne);
+    GB.LevelLoader.loadTheseLevels(["easter_eggs_level2"], levelOne);
 
     PS.statusColor(PS.COLOR_WHITE);
     PS.gridColor(PS.COLOR_BLACK);
@@ -23,10 +22,13 @@ PS.init = function(system, options) {
 };
 
 function initItemMakers() {
+
+    // YELLOW: Player!
     GB.LevelLoader.registerItem(0xFFFF00, function(x, y, cxn) {
         new Player(x, y);
     });
 
+    // RED: Regular vertical doorway
     GB.LevelLoader.registerItem(0xFF0000, function(x, y, cxn) {
         new Doorway(
             {x:x,y:y},
@@ -42,6 +44,7 @@ function initItemMakers() {
         );
     });
 
+    // BLUE: Regular horizontal doorway
     GB.LevelLoader.registerItem(0x0000FF, function(x, y, cxn) {
         new Doorway(
             {x:x,y:y},
@@ -57,29 +60,51 @@ function initItemMakers() {
         );
     });
 
+    // MAGENTA: Death zone (kills the player when they step into it)
     GB.LevelLoader.registerItem(0xFF00FF, function(x, y, cxn) {
         new DeathZone({x:x,y:y}, {x:x,y:y});
     });
 
+    // GREEN: Button
     GB.LevelLoader.registerItem(0x00FF00, function(x, y, cxn) {
         new Button(x, y, cxn);
     });
 
+    // DARK GREEN: Invisible button
     GB.LevelLoader.registerItem(0x007400, function(x, y, cxn) {
         new Invisibility(new Button(x, y, cxn));
     });
 
+    // CYAN: Disappearing wall (toggleable)
     GB.LevelLoader.registerItem(0x00FFFF, function(x, y, cxn) {
         new MobileWall(x, y, cxn);
     });
 
+    // CERULEAN: Disappearing wall (not toggleable)
+    GB.LevelLoader.registerItem(0x006dd0, function(x, y, cxn) {
+        new MobileWall(x, y, cxn, false);
+    });
+
+    // LIGHT ORANGE: Victory zone, you win when you reach one of these.
     GB.LevelLoader.registerItem(0xFFAA00, function(x, y, cxn) {
         new VictoryZone({x:x, y:y}, {x:x+1, y:y});
+    });
+
+    // DARK GRAY: Camera starting point, collision.
+    GB.LevelLoader.registerItem(0x696969, function(x, y, cxn) {
+        GB.View.setPosition({x:x, y:y});
+        GB.World.setCollisionSquare(x, y, true);
+    });
+
+    // LIGHT GRAY: Camera starting point, no collision.
+    GB.LevelLoader.registerItem(0x969696, function(x, y, cxn) {
+        GB.View.setPosition({x:x, y:y});
+        GB.World.setCollisionSquare(x, y, false);
     });
 }
 
 function levelOne() {
-    GB.LevelLoader.buildLevel("easter_eggs_level");
+    GB.LevelLoader.buildLevel("easter_eggs_level2");
 }
 
 PS.keyDown = function( key, shift, ctrl, options ) {
