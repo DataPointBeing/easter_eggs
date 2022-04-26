@@ -12,7 +12,7 @@ class Player extends GB.Object {
 
     static #key;
 
-    static #;
+    //static #;
 
     ticks_since_last_move_h = this.move_delay;
     ticks_since_last_move_v = this.move_delay;
