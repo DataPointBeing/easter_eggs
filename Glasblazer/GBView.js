@@ -11,9 +11,17 @@ GB.Loader.addLoad(
                 if(bg !== 'undefined') {
                     this.setBg(bg);
                 }
+                else {
+                    this.setBg(this.#default_bg);
+                }
 
                 PS.border(PS.ALL, PS.ALL, 0);
                 PS.alpha(PS.ALL, PS.ALL, PS.ALPHA_TRANSPARENT);
+
+                GB.World.populateAll();
+
+                PS.gridColor(PS.COLOR_BLACK);
+                PS.statusColor(PS.COLOR_WHITE);
             }
 
             setPosition(new_pos) {

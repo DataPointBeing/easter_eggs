@@ -17,6 +17,7 @@ GB.Loader.addLoad(
 
             #event_categories = {};
 
+
             hello(thing) {
                 this.#world_objects.push(thing);
                 this.#interests.push([]);
@@ -26,6 +27,8 @@ GB.Loader.addLoad(
 
             goodbye(thing) {
                 const ind = this.#world_objects.indexOf(thing);
+
+                thing.clearConduit();
 
                 this.#removeInterests(ind);
                 this.#world_objects.splice(ind, 1);
@@ -97,9 +100,6 @@ GB.Loader.addLoad(
                 } else if (!this.#event_categories[event_type].includes(thing)) {
                     this.#event_categories[event_type].push(thing);
                     this.#appendInterest(thing, event_type);
-                }
-                else {
-                    PS.debug("nope");
                 }
             }
 

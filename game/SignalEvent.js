@@ -1,12 +1,12 @@
-class ButtonEvent extends GB.Event {
+class SignalEvent extends GB.Event {
     static evType() {
-        return "button_press";
+        return "signal_broadcast";
     }
 
     #frequency;
 
     constructor(freq) {
-        super(ButtonEvent.evType());
+        super(SignalEvent.evType());
 
         this.#frequency = freq;
     }

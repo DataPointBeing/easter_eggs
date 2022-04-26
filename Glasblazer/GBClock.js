@@ -42,6 +42,10 @@ GB.Loader.addLoad(
                 return (GBClock.#ticks_elapsed * this.#tick_time) / 60.0;
             }
 
+            ticksToSeconds(ticks) {
+                return (ticks * this.#tick_time) / 60.0;
+            }
+
 
             // A variation on the singleton pattern
             constructor() {

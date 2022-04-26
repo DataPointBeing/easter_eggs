@@ -19,6 +19,8 @@ GB.Loader.addLoad(
             #pop_overrides = [];
             #dePop_overrides = [];
 
+            #conduit = null;
+
             constructor(type) {
                 this.#type = type;
                 this.#deleted = false;
@@ -167,6 +169,26 @@ GB.Loader.addLoad(
 
             setID(new_id) {
                 this.#id = new_id;
+            }
+
+            setConduit(cond) {
+                this.#conduit = cond;
+            }
+
+            getConduit() {
+                return this.#conduit;
+            }
+
+            clearConduit() {
+                if(this.#conduit !== null) {
+                    this.#conduit.unbind(this);
+                }
+            }
+
+            alertConduit() {
+                if(this.#conduit !== null) {
+                    this.#conduit.update(this);
+                }
             }
 
             doEvent(event) {

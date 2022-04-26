@@ -7,6 +7,8 @@ class VictoryZone extends GB.AuraObject {
             if(thing.getType() === "hero" && !VictoryZone.#won) {
                 VictoryZone.#won = true;
                 PS.audioPlay("fx_tada", {volume: 0.2});
+
+                Player.setTimerActive(false);
             }
         };
 
