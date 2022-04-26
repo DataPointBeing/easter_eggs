@@ -24,6 +24,7 @@ class TriLightBulb extends GB.Object {
         this.#mask = parseInt(mask, 16);
 
         GB.World.registerInterest(this, SignalEvent);
+        GB.World.registerInterest(this, GB.TickEvent);
     }
 
     doEvent(event) {
@@ -32,8 +33,10 @@ class TriLightBulb extends GB.Object {
                 if((event.getFrequency() & this.#mask) === this.#frequency) {
                     this.#active = !this.#active;
                     this.refresh();
-                    this.alertConduit();
                 }
+                break;
+            case GB.TickEvent.evType():
+                this.alertConduit();
                 break;
         }
     }
