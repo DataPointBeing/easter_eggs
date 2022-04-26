@@ -3,7 +3,6 @@
 PS.init = function(system, options) {
     PS.keyRepeat(true, 2, 2);
 
-    PS.audioLoad("fx_hoot");
     PS.audioLoad("fx_tada");
     PS.audioLoad("fx_blip");
     PS.audioLoad("fx_beep");
@@ -45,14 +44,39 @@ function initConduitMakers() {
         return GB.Conduit.get(RoomNameConduit, 0xD0A300, "The Boring Room", "The Realm of the Shrubbery");
     });
 
-    // HOT PINK: Changes the room name (DOORWAY: 3 LAMPS to ???)
+    // HOT PINK: Changes the room name (DOORWAY: 3 LAMPS to DEATH PATHS)
     GB.LevelLoader.registerConduit(0xFF2BD0, function(x, y, cxn) {
-        return GB.Conduit.get(RoomNameConduit, 0xFF2BD0, "Three Lamps", "???");
+        return GB.Conduit.get(RoomNameConduit, 0xFF2BD0, "Three Lamps", "Deathly Pathways");
     });
 
     // BROWN: Changes the room name (DOORWAY: SHRUBBERY to 3 LAMPS)
     GB.LevelLoader.registerConduit(0x5E2B09, function(x, y, cxn) {
         return GB.Conduit.get(RoomNameConduit, 0x5E2B09, "The Realm of the Shrubbery", "Three Lamps");
+    });
+
+    // PALE PINK: Changes the room name (DOORWAY: DEATH PATHS to LOCKSPORT)
+    GB.LevelLoader.registerConduit(0xCE8B86, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0xCE8B86, "Deathly Pathways", "Locksport");
+    });
+
+    // SALMON: Changes the room name (DOORWAY: LOCKSPORT to QUAD CANDLES)
+    GB.LevelLoader.registerConduit(0xFF5548, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0xFF5548, "Locksport", "Quad Candles");
+    });
+
+    // BLUE-GRAY: Changes the room name (DOORWAY: QUAD CANDLES to WINNERS' GRIN)
+    GB.LevelLoader.registerConduit(0x3F3B4E, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0x3F3B4E, "Quad Candles", "The Winner's Grin");
+    });
+
+    // NAVY: Changes the room name (DOORWAY: 3 LAMPS to ???)
+    GB.LevelLoader.registerConduit(0x000080, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0x000080, "Three Lamps", "???");
+    });
+
+    // DARK FUSCHIA: Changes the room name (DOORWAY: ??? to LOCKSPORT)
+    GB.LevelLoader.registerConduit(0x80003E, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0x80003E, "???", "Locksport");
     });
 }
 
@@ -87,6 +111,7 @@ function initItemMakers() {
 
     // LIGHT RED: Upper left secret horizontal doorway (with wall)
     GB.LevelLoader.registerItem(0xCE3333, function(x, y, cxn, add) {
+        new MobileWall(x, y, cxn, false, true, add, 0);
         return [
             // UP
             new Doorway(
@@ -107,8 +132,7 @@ function initItemMakers() {
                 true,
                 {x: 16, y: 16},
                 {x: 7, y: 7}
-            ),
-            new MobileWall(x, y, cxn, false, true, add, 0)
+            )
         ];
     });
 
@@ -136,6 +160,7 @@ function initItemMakers() {
 
     // LIGHT BLUE: Lower right secret horizontal doorway (with wall)
     GB.LevelLoader.registerItem(0x338DCE, function(x, y, cxn, add) {
+        new MobileWall(x, y, cxn, false, true, add, 0);
         return [
             // LEFT
             new Doorway(
@@ -156,8 +181,7 @@ function initItemMakers() {
                 true,
                 {x:7, y:7},
                 {x: 16, y: 16}
-            ),
-            new MobileWall(x, y, cxn, false, true, add, 0)
+            )
         ];
     });
 
