@@ -29,6 +29,21 @@ GB.Loader.addLoad(
                 }
             }
 
+            static getForceSingular(condType, freq, ...args) {
+                if(!this.#freq_conduits[condType]) {
+                    this.#freq_conduits[condType] = {};
+                }
+
+                if(this.#freq_conduits[condType][0]) {
+                    return this.#freq_conduits[condType][0];
+                }
+                else {
+                    const cond = new condType(freq, args);
+                    this.#freq_conduits[condType][0] = cond;
+                    return cond;
+                }
+            }
+
             bind(thing) {
                 if(GBConduit.#watching_sets[this.#frequency]) {
                     GBConduit.#watching_sets[this.#frequency].push(thing);

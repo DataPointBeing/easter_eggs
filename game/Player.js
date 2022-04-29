@@ -4,6 +4,8 @@ class Player extends GB.Object {
 
     spacebar_down = false;
 
+    static #just_in_door = false;
+
     static #room_name;
     static #timer_start;
 
@@ -12,7 +14,10 @@ class Player extends GB.Object {
 
     static #key;
 
-    //static #;
+    static #respawn_camera_position;
+    static #respawn_camera_dimensions;
+    static #respawn_position;
+    static #respawn_name;
 
     ticks_since_last_move_h = this.move_delay;
     ticks_since_last_move_v = this.move_delay;
@@ -30,6 +35,25 @@ class Player extends GB.Object {
         Player.#key = null;
 
         super.setPosition({x:x, y:y});
+        this.getCheckpoint();
+    }
+
+    getCheckpoint() {
+        Player.#respawn_position = {x:this.getPositionX(), y:this.getPositionY()};
+
+        Player.#respawn_camera_position = GB.View.getPosition();
+        Player.#respawn_camera_dimensions = {x:GB.View.getWidth(), y:GB.View.getHeight()};
+        Player.#respawn_name = Player.#room_name;
+    }
+
+    kill() {
+        PS.audioPlay("fx_hoot", {volume: 0.2});
+
+        GB.View.setPosition(Player.#respawn_camera_position);
+        GB.View.setViewGrid(Player.#respawn_camera_dimensions.x, Player.#respawn_camera_dimensions.y);
+        Player.#room_name = Player.#respawn_name;
+
+        this.setPosition(Player.#respawn_position);
     }
 
     doEvent(event) {
@@ -40,9 +64,22 @@ class Player extends GB.Object {
             case GB.TickEvent.evType():
                 this.ticks_since_last_move_h++;
                 this.ticks_since_last_move_v++;
+                Player.#just_in_door = false;
                 Player.#updateStatus();
                 break;
         }
+    }
+
+    static goIntoDoor() {
+        this.#just_in_door = true;
+    }
+
+    static exitDoor() {
+        this.#just_in_door = false;
+    }
+
+    static isJustInDoor() {
+        return Player.#just_in_door;
     }
 
     static setKey(k) {

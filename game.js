@@ -8,6 +8,7 @@ PS.init = function(system, options) {
     PS.audioLoad("fx_beep");
 
     PS.audioLoad("fx_powerup7");
+    PS.audioLoad("fx_coin1");
     PS.audioLoad("fx_coin3");
     PS.audioLoad("fx_shoot8");
     PS.audioLoad("fx_hoot");
@@ -39,24 +40,29 @@ function initConduitMakers() {
         ]);
     });
 
+    // ORANGE: May send a teleport signal when this TELE-DOORWAY is newly entered. ("Lost Woods logic" variant)
+    GB.LevelLoader.registerConduit(0xFF7120, function(x, y, cxn) {
+        return GB.Conduit.get(LostWoodsConduit, cxn, [
+            0x65484d,
+            0xe5c462,
+            0xe78bff,
+            0x8b7120
+        ]);
+    });
+
+    // UNRIPE ORANGE: Sends a teleport signal when this TELE-DOORWAY is newly entered.
+    GB.LevelLoader.registerConduit(0xFFA154, function(x, y, cxn) {
+        return GB.Conduit.get(TeleDoorConduit, cxn);
+    });
+
     // GOLDENROD: Changes the room name (INITIAL DOORWAY)
     GB.LevelLoader.registerConduit(0xD0A300, function(x, y, cxn) {
         return GB.Conduit.get(RoomNameConduit, 0xD0A300, "The Boring Room", "The Realm of the Shrubbery");
     });
 
-    // HOT PINK: Changes the room name (DOORWAY: 3 LAMPS to DEATH PATHS)
-    GB.LevelLoader.registerConduit(0xFF2BD0, function(x, y, cxn) {
-        return GB.Conduit.get(RoomNameConduit, 0xFF2BD0, "Three Lamps", "Deathly Pathways");
-    });
-
     // BROWN: Changes the room name (DOORWAY: SHRUBBERY to 3 LAMPS)
     GB.LevelLoader.registerConduit(0x5E2B09, function(x, y, cxn) {
         return GB.Conduit.get(RoomNameConduit, 0x5E2B09, "The Realm of the Shrubbery", "Three Lamps");
-    });
-
-    // PALE PINK: Changes the room name (DOORWAY: DEATH PATHS to LOCKSPORT)
-    GB.LevelLoader.registerConduit(0xCE8B86, function(x, y, cxn) {
-        return GB.Conduit.get(RoomNameConduit, 0xCE8B86, "Deathly Pathways", "Locksport");
     });
 
     // SALMON: Changes the room name (DOORWAY: LOCKSPORT to QUAD CANDLES)
@@ -183,6 +189,63 @@ function initItemMakers() {
                 {x: 16, y: 16}
             )
         ];
+    });
+
+    // CORNFLOWER: Teleporting horizontal doorway (going right)
+    GB.LevelLoader.registerItem(0x698FAB, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x-16, y:y+1-(8)},
+                cxn
+            ),
+        ];
+    });
+
+    // CORNFLOWER II: Teleporting horizontal doorway (going left)
+    GB.LevelLoader.registerItem(0x6499C1, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x+1, y:y+1-(8)},
+                cxn
+            ),
+        ];
+    });
+
+    // RED-GRAY: Teleporting horizontal doorway (going up)
+    GB.LevelLoader.registerItem(0xAD7C8B, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x+1,y:y},
+                {x:x+1-(8), y:y+1},
+                cxn
+            ),
+        ];
+    });
+
+    // RED-GRAY II: Teleporting horizontal doorway (going down)
+    GB.LevelLoader.registerItem(0xC26F88, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x+1,y:y},
+                {x:x+1-(8), y:y-16},
+                cxn
+            ),
+        ];
+    });
+
+    // MUSTARD: Checkpoint (sets respawn point in case of death)
+    GB.LevelLoader.registerItem(0xDBBD5E, function(x, y) {
+        return [new Checkpoint(x, y)];
     });
 
     // MAGENTA: Death zone (kills the player when they step into it)

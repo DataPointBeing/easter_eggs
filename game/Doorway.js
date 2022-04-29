@@ -19,6 +19,7 @@ class Doorway extends GB.AuraObject {
                     me.setPassed(false);
                 }
 
+                Player.goIntoDoor();
                 inDoorway = true;
             }
         };

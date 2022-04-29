@@ -4,7 +4,7 @@ class RoomNameConduit extends GB.Conduit {
 
     // ARGUMENTS: 0 is room name BEFORE, 1 is room name AFTER
     constructor(freq, args) {
-        super("right_order", freq);
+        super("room_name", freq);
 
         this.#before = args[0];
         this.#after = args[1];
