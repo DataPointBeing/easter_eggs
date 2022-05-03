@@ -335,6 +335,34 @@ function initItemMakers() {
         ];
     });
 
+    // BLUE GLOAM: Intro room secret teleporting (horizontal) doorway
+    GB.LevelLoader.registerItem(0x122F45, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x-16, y:y-4},
+                cxn,
+                {x:16, y:16}
+            ),
+        ];
+    });
+
+    // BLUE TWILIGHT: Ending pathway left-hand teleporting doorway
+    GB.LevelLoader.registerItem(0x063253, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x+1, y:y-3},
+                cxn,
+                {x:7, y:7}
+            ),
+        ];
+    });
+
     // RED-GRAY: Teleporting vertical doorway (going up)
     GB.LevelLoader.registerItem(0xAD7C8B, function(x, y, cxn) {
         return [
