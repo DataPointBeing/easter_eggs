@@ -1,3 +1,5 @@
+// Cave sounds: provided by Zapsplat.com
+
 "use strict"; // Do NOT remove this directive!
 
 PS.init = function(system, options) {
@@ -12,6 +14,8 @@ PS.init = function(system, options) {
     PS.audioLoad("fx_coin3");
     PS.audioLoad("fx_shoot8");
     PS.audioLoad("fx_hoot");
+
+    PS.audioLoad("cave_loop", {path: "sounds/", fileTypes: ["wav"]});
 
     GB.Clock.startLoop();
 
@@ -405,6 +409,41 @@ function initItemMakers() {
         return [new VictoryZone({x:x, y:y}, {x:x+1, y:y})];
     });
 
+    // BRILLIANT ORANGE: Forest burn zone. Irreparably destroys the Weald when tread upon.
+    GB.LevelLoader.registerItem(0xFF6E00, function(x, y) {
+        return [new WoodsKerosene({x:x, y:y}, {x:x, y:y+1})];
+    });
+
+    // VERDANT: Ordinary shrub label.
+    GB.LevelLoader.registerItem(0x00AA37, function(x, y) {
+        return [new Label(x, y, "Ordinary Shrub")];
+    });
+
+    // EMERALD: Non-ordinary shrub label.
+    GB.LevelLoader.registerItem(0x007C4A, function(x, y) {
+        return [new Label(x, y, "Ordinary Shrub...?")];
+    });
+
+    // BLUISH: The most dapper shrub.
+    GB.LevelLoader.registerItem(0x017C98, function(x, y) {
+        return [new Label(x, y, "Mr. Shrub")];
+    });
+
+    // PURPLISH: The absolute fanciest shrub.
+    GB.LevelLoader.registerItem(0x780198, function(x, y) {
+        return [new Label(x, y, "Mrs. Shrub")];
+    });
+
+    // WARM YELLOW: The ambience of a tent.
+    GB.LevelLoader.registerItem(0xF4C800, function(x, y) {
+        return [new Label(x, y, "How cozy.")];
+    });
+
+    // CRIMSON: A fire hazard.
+    GB.LevelLoader.registerItem(0xFF1D23, function(x, y) {
+        return [new Label(x, y, "Unattended Campfire", true)];
+    });
+
     // DARK GRAY: Camera starting point, collision.
     GB.LevelLoader.registerItem(0x696969, function(x, y) {
         GB.View.setPosition({x:x, y:y});
@@ -427,6 +466,13 @@ function initItemMakers() {
     // BEIGE: Lock, with CONNECTION as color
     GB.LevelLoader.registerItem(0x9B7B4F, function(x, y, cxn) {
         return [new LockBlock(x, y, cxn)];
+    });
+
+    // MAUVE: Lock, with no radius, CONNECTION as color and ADDITIONAL as border. Sends a signal on unlock
+    GB.LevelLoader.registerItem(0x522542, function(x, y, cxn, add) {
+        const lb = new LockBlock(x, y, cxn, add, 0, true);
+        lb.setLabel("Inconspicuous Locked Block");
+        return [lb];
     });
 }
 

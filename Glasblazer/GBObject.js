@@ -21,7 +21,7 @@ GB.Loader.addLoad(
 
             #conduit = null;
 
-            constructor(type) {
+            constructor(type, use_pass_id = false) {
                 this.#type = type;
                 this.#deleted = false;
                 this.#position = {x: 0, y: 0};
@@ -31,7 +31,7 @@ GB.Loader.addLoad(
 
                 this.#draw_overridden = false;
 
-                GB.World.hello(this);
+                GB.World.hello(this, use_pass_id);
 
                 //this.populate(this.#position);
             }

@@ -5,7 +5,9 @@ class LockBlock extends Interactable {
     #color;
     #radius;
 
-    constructor(x, y, freq, color = 0x9b7b4f, radius = 10) {
+    #do_signal;
+
+    constructor(x, y, freq, color = 0x9b7b4f, radius = 10, signal = false) {
         super("locked_block", "Locked Block");
         this.setPosition({x:x, y:y});
 
@@ -13,6 +15,7 @@ class LockBlock extends Interactable {
         this.#radius = radius;
 
         this.#frequency = freq;
+        this.#do_signal = signal;
     }
 
     populate(pos) {
@@ -47,6 +50,10 @@ class LockBlock extends Interactable {
 
             GB.World.markForDelete(this);
             PS.audioPlay("fx_shoot8", {volume: 0.1});
+
+            if(this.#do_signal) {
+                GB.World.sendEvent(new SignalEvent(this.#frequency));
+            }
         }
         else {
             PS.audioPlay("fx_hoot", {volume: 0.2});

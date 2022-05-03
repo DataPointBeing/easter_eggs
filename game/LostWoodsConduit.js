@@ -46,6 +46,7 @@ class LostWoodsConduit extends GB.Conduit {
 
             LostWoodsConduit.reset();
             Player.setRoomName("Locksport");
+            GB.World.sendEvent(new SignalEvent(0xC774C7));
             PS.audioPlay("fx_coin1", {volume: 0.1});
         }
 

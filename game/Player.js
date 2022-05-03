@@ -25,6 +25,10 @@ class Player extends GB.Object {
     ticks_since_last_move_h = this.move_delay;
     ticks_since_last_move_v = this.move_delay;
 
+    static #sounds;
+
+    static #easter_egged;
+
     constructor(x = 0, y = 0) {
         super("hero");
 
@@ -35,12 +39,15 @@ class Player extends GB.Object {
         Player.#object_label = null;
         Player.#room_color = PS.COLOR_WHITE;
         Player.#timer_start = 0;
-        Player.#final_time = 0;
+        Player.#final_time = null;
 
         Player.#key = null;
 
         super.setPosition({x:x, y:y});
         this.getCheckpoint();
+
+        Player.#sounds = PS.audioPlay("cave_loop", {path: "sounds/", fileTypes: ["wav"], volume: 0.05, loop: true})
+        Player.#easter_egged = false;
     }
 
     getCheckpoint() {
@@ -138,18 +145,33 @@ class Player extends GB.Object {
         return minutes + ":" + seconds;
     }
 
+    static causeToBeEgged() {
+        this.#easter_egged = true;
+        PS.audioStop(this.#sounds);
+    }
+
     static setTimerActive(set) {
         this.#timer_active = set;
         if(!set) {
             this.#final_time = GB.Clock.getTicksElapsed();
-            PS.statusText("You win! Final time: " + Player.finishTime());
         }
     }
 
     static #updateStatus() {
         PS.statusColor(this.#room_color);
+
+        if(Player.#easter_egged) {
+            PS.statusText("");
+            return;
+        }
+
         if(this.#object_label !== null) {
             PS.statusText(this.#object_label);
+            return;
+        }
+
+        if(!this.#timer_active && this.#final_time !== null) {
+            PS.statusText("You win! Final time: " + Player.finishTime());
             return;
         }
 
@@ -164,7 +186,7 @@ class Player extends GB.Object {
     populate(pos) {
         PS.alpha(pos.x, pos.y, PS.ALPHA_OPAQUE);
         PS.radius(pos.x, pos.y, 20);
-        PS.data(pos.x, pos.y, 1);
+        //PS.data(pos.x, pos.y, 1);
 
         if(Player.#key === null) {
             PS.color(pos.x, pos.y, 0x206E81);
@@ -183,7 +205,7 @@ class Player extends GB.Object {
         PS.radius(pos.x, pos.y, 0);
         PS.border(pos.x, pos.y, 0);
         PS.borderAlpha(pos.x, pos.y, 0);
-        PS.data(pos.x, pos.y, null);
+        //PS.data(pos.x, pos.y, null);
     }
 
     #doAction(key, down){
@@ -213,7 +235,7 @@ class Player extends GB.Object {
 
                     const w_pos = {x: super.getPosition().x + x, y: super.getPosition().y + y};
                     const v_pos = GB.Utility.worldToView(w_pos);
-                    if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+                    if(GB.View.inView(v_pos) && Math.abs(PS.data(v_pos.x, v_pos.y)) > 1) {
                         const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
                         if(thing !== null) {
                             thing.doEvent(new InteractEvent());
@@ -264,7 +286,7 @@ class Player extends GB.Object {
 
             const w_pos = {x: super.getPosition().x + vec.x, y: super.getPosition().y + vec.y};
             const v_pos = GB.Utility.worldToView(w_pos);
-            if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+            if(GB.View.inView(v_pos) && Math.abs(PS.data(v_pos.x, v_pos.y)) > 1) {
                 const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
                 if(thing !== null) {
                     thing.doEvent(new LookEvent());
@@ -280,7 +302,7 @@ class Player extends GB.Object {
 
                     const w_pos = {x: super.getPosition().x + x, y: super.getPosition().y + y};
                     const v_pos = GB.Utility.worldToView(w_pos);
-                    if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+                    if(GB.View.inView(v_pos) && Math.abs(PS.data(v_pos.x, v_pos.y)) > 1) {
                         const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
                         if(thing !== null) {
                             thing.doEvent(new LookEvent());

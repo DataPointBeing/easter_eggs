@@ -5,6 +5,7 @@ class Interactable extends GB.Object {
     constructor(type, label = null) {
         super(type);
         GB.World.registerInterest(this, InteractEvent);
+        GB.World.registerInterest(this, LookEvent);
 
         this.#label = label;
     }
