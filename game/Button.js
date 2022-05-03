@@ -8,14 +8,17 @@ class Button extends Interactable {
     #one_press
     #interacted
 
-    constructor(x, y, cnx, one_press = false, color = PS.COLOR_RED, sound = "fx_blip", sound_vol = 0.2) {
-        super("button");
+    #is_tri;
+
+    constructor(x, y, cnx, one_press = false, tri = false, color = PS.COLOR_RED, sound = "fx_blip", sound_vol = 0.2) {
+        super("button", "Button");
         super.setPosition({x:x,y:y});
         this.#frequency = cnx;
         this.#color = color;
 
         this.#sound = sound;
         this.#volume = sound_vol;
+        this.#is_tri = tri;
 
         this.#one_press = one_press;
         this.#interacted = false;
@@ -42,7 +45,7 @@ class Button extends Interactable {
     handleInteract() {
         if(!(this.#one_press && this.#interacted)) {
             PS.audioPlay(this.#sound, {volume: this.#volume});
-            GB.World.sendEvent(new SignalEvent(this.#frequency));
+            GB.World.sendEvent(new SignalEvent(this.#frequency, this.#is_tri));
             this.alertConduit();
             this.#interacted = true;
         }

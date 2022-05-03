@@ -7,7 +7,10 @@ class Player extends GB.Object {
     static #just_in_door = false;
 
     static #room_name;
+    static #room_color;
     static #timer_start;
+
+    static #object_label;
 
     static #timer_active = true;
     static #final_time;
@@ -29,6 +32,8 @@ class Player extends GB.Object {
         GB.World.registerInterest(this, GB.TickEvent);
 
         Player.#room_name = null;
+        Player.#object_label = null;
+        Player.#room_color = PS.COLOR_WHITE;
         Player.#timer_start = 0;
         Player.#final_time = 0;
 
@@ -90,16 +95,25 @@ class Player extends GB.Object {
         return this.#key;
     }
 
-    static setRoomName(name) {
+    static setRoomName(name, color) {
         if(this.#room_name === null) {
             Player.#timer_start = GB.Clock.getTicksElapsed();
         }
 
         Player.#room_name = name;
+        Player.#room_color = color? color : PS.COLOR_WHITE;
     }
 
-    getRoomName(name) {
+    static getRoomName(name) {
         return Player.#room_name;
+    }
+
+    static setLookingAt(text) {
+        this.#object_label = text;
+    }
+
+    static getLookingAt() {
+        return this.#object_label;
     }
 
     static timerInSeconds() {
@@ -133,6 +147,12 @@ class Player extends GB.Object {
     }
 
     static #updateStatus() {
+        PS.statusColor(this.#room_color);
+        if(this.#object_label !== null) {
+            PS.statusText(this.#object_label);
+            return;
+        }
+
         if(Player.#room_name === null) {
             PS.statusText("WASD/arrows to move, Spacebar to interact");
         }
@@ -211,18 +231,23 @@ class Player extends GB.Object {
 
     #tryMove(dir, vert, down){
         if(down && ((vert? this.ticks_since_last_move_v : this.ticks_since_last_move_h) >= this.move_delay)) {
+            let vec = {x:0, y:0};
             switch (dir) {
                 case GB.InputType.UP:
                     super.setPositionY(super.getPositionY() - 1);
+                    vec = {x:0,y:-1};
                     break;
                 case GB.InputType.DOWN:
                     super.setPositionY(super.getPositionY() + 1);
+                    vec = {x:0,y:1};
                     break;
                 case GB.InputType.LEFT:
                     super.setPositionX(super.getPositionX() - 1);
+                    vec = {x:-1,y:0};
                     break;
                 case GB.InputType.RIGHT:
                     super.setPositionX(super.getPositionX() + 1);
+                    vec = {x:1,y:0};
                     break;
             }
 
@@ -232,6 +257,40 @@ class Player extends GB.Object {
             else {
                 this.ticks_since_last_move_h = 0;
             }
+
+            if(GB.View.getIsBounded()) {
+                GB.View.centerOn(super.getPosition());
+            }
+
+            const w_pos = {x: super.getPosition().x + vec.x, y: super.getPosition().y + vec.y};
+            const v_pos = GB.Utility.worldToView(w_pos);
+            if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+                const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
+                if(thing !== null) {
+                    thing.doEvent(new LookEvent());
+                    return;
+                }
+            }
+
+            for(let x = -1; x < 2; x++){
+                for(let y = -1; y < 2; y++){
+                    if(Math.abs(x) === Math.abs(y)) {
+                        continue;
+                    }
+
+                    const w_pos = {x: super.getPosition().x + x, y: super.getPosition().y + y};
+                    const v_pos = GB.Utility.worldToView(w_pos);
+                    if(GB.View.inView(v_pos) && PS.data(v_pos.x, v_pos.y) > 1) {
+                        const thing = GB.World.objectFromID(PS.data(v_pos.x, v_pos.y));
+                        if(thing !== null) {
+                            thing.doEvent(new LookEvent());
+                            return;
+                        }
+                    }
+                }
+            }
+
+            Player.setLookingAt(null);
         }
     }
 }

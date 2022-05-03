@@ -1,8 +1,12 @@
 class Interactable extends GB.Object {
 
-    constructor(type) {
+    #label;
+
+    constructor(type, label = null) {
         super(type);
         GB.World.registerInterest(this, InteractEvent);
+
+        this.#label = label;
     }
 
     populate(pos) {
@@ -18,6 +22,9 @@ class Interactable extends GB.Object {
             case InteractEvent.evType():
                 this.handleInteract();
                 break;
+            case LookEvent.evType():
+                Player.setLookingAt(this.#label);
+                break;
         }
     }
 
@@ -25,4 +32,11 @@ class Interactable extends GB.Object {
 
     }
 
+    setLabel(label) {
+        this.#label = label;
+    }
+
+    getLabel(label) {
+        return this.#label;
+    }
 }

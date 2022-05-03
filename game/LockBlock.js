@@ -6,7 +6,7 @@ class LockBlock extends Interactable {
     #radius;
 
     constructor(x, y, freq, color = 0x9b7b4f, radius = 10) {
-        super("locked_block");
+        super("locked_block", "Locked Block");
         this.setPosition({x:x, y:y});
 
         this.#color = color;

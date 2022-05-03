@@ -6,11 +6,15 @@ class LostWoodsConduit extends GB.Conduit {
 
     static #recorded;
 
+    static #attempts;
+
     // ARGUMENTS: 0 is order
     constructor(freq, args) {
         super("lost_woods", freq);
 
         LostWoodsConduit.#order = args[0];
+
+        LostWoodsConduit.#attempts = 0;
 
         LostWoodsConduit.reset();
     }
@@ -18,7 +22,11 @@ class LostWoodsConduit extends GB.Conduit {
     update(pinged) {
         if(!LostWoodsConduit.#in_progress) {
             LostWoodsConduit.#in_progress = true;
-            Player.setRoomName("Weald of Seemingly No End");
+            if(LostWoodsConduit.#attempts < 3) {
+                Player.setRoomName("Weald of Seemingly No End");
+            } else {
+                Player.setRoomName("[W]eald of [S]eemingly [N]o [E]nd", PS.COLOR_YELLOW);
+            }
             this.tryTeleportThing(pinged);
             return;
         }
@@ -31,6 +39,7 @@ class LostWoodsConduit extends GB.Conduit {
                 if(LostWoodsConduit.#recorded[i] !== LostWoodsConduit.#order[i]) {
                     LostWoodsConduit.reset();
                     pinged.getEnteredThing().kill();
+                    LostWoodsConduit.#attempts++;
                     return;
                 }
             }

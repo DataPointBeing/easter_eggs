@@ -30,7 +30,7 @@ class TriLightBulb extends GB.Object {
     doEvent(event) {
         switch(event.getType()) {
             case SignalEvent.evType():
-                if((event.getFrequency() & this.#mask) === this.#frequency) {
+                if(event.getIsTri() && (event.getFrequency() & this.#mask) === this.#frequency) {
                     this.#active = !this.#active;
                     this.refresh();
                 }

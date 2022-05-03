@@ -4,6 +4,7 @@ GB.Loader.addLoad(
 
         class GBWorld {
             static #master_id = 2;
+            static #master_through_id = -2;
 
             #map_colors = [];
             #map_collision = [];
@@ -18,11 +19,15 @@ GB.Loader.addLoad(
             #event_categories = {};
 
 
-            hello(thing) {
+            hello(thing, use_pass_id = false) {
                 this.#world_objects.push(thing);
                 this.#interests.push([]);
 
-                thing.setID(GBWorld.#master_id++);
+                if(use_pass_id) {
+                    thing.setID(GBWorld.#master_through_id--);
+                } else {
+                    thing.setID(GBWorld.#master_id++);
+                }
             }
 
             goodbye(thing) {
@@ -222,6 +227,10 @@ GB.Loader.addLoad(
 
             setBackgroundArray(bg) {
                 this.#map_colors = bg;
+            }
+
+            getBackgroundColorAt(x, y) {
+                return this.#map_colors[y][x];
             }
 
             objectFromID(id) {

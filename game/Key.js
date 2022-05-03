@@ -6,7 +6,7 @@ class Key extends Interactable {
     #radius;
 
     constructor(x, y, freq, color = 0x636363, radius = 10) {
-        super("key");
+        super("key", "Key");
         this.setPosition({x:x, y:y});
 
         this.#color = color;

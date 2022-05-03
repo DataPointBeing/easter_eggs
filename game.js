@@ -93,20 +93,72 @@ function initItemMakers() {
         return [new Player(x, y)];
     });
 
+    // PEACH: Final path top entrance
+    GB.LevelLoader.registerItem(0xBF7751, function(x, y, cxn) {
+        return [
+            // UP
+            new Doorway(
+                {x:x,y:y},
+                {x:x+1,y:y},
+                {x:x+1-(8), y:y+1-16},
+                {x:x-(3), y:y+2},
+                false,
+                {x: 16, y: 16},
+                {x: 7, y:7}
+            ),
+            // DOWN
+            new Doorway(
+                {x:x,y:y+2},
+                {x:x+1,y:y+2},
+                {x:x+1-(8), y:y+2},
+                {x:x+1-(8), y:y+1-16},
+                true,
+                {x: 7, y:7},
+                {x: 16, y: 16}
+            )
+        ];
+    });
+
+    // PEACH II: Final path exit
+    GB.LevelLoader.registerItem(0xBF6751, function(x, y, cxn) {
+        return [
+            // UP
+            new Doorway(
+                {x:x,y:y},
+                {x:x+1,y:y},
+                {x:x-4, y:y-6},
+                {x:x+1-(8), y:y+2},
+                false,
+                {x: 7, y: 7},
+                {x: 16, y: 16}
+            ),
+            // DOWN
+            new Doorway(
+                {x:x,y:y+2},
+                {x:x+1,y:y+2},
+                {x:x+1-(8), y:y+2},
+                {x:x-3, y:y-6},
+                true,
+                {x: 16, y: 16},
+                {x: 7, y:7}
+            )
+        ];
+    });
+
     // RED: Regular vertical doorway
     GB.LevelLoader.registerItem(0xFF0000, function(x, y, cxn) {
         return [
             // UP
             new Doorway(
                 {x:x,y:y},
-                {x:x+1,y:y+1},
+                {x:x+1,y:y},
                 {x:x+1-(8), y:y+1-16},
                 {x:x+1-(8), y:y+2},
                 false
             ),
             // DOWN
             new Doorway(
-                {x:x,y:y+1},
+                {x:x,y:y+2},
                 {x:x+1,y:y+2},
                 {x:x+1-(8), y:y+2},
                 {x:x+1-(8), y:y+1-16},
@@ -122,7 +174,7 @@ function initItemMakers() {
             // UP
             new Doorway(
                 {x:x,y:y},
-                {x:x+1,y:y+1},
+                {x:x+1,y:y},
                 {x:x+1-(8-3), y:y+1-7},
                 {x:x+1-(8-3), y:y+2},
                 false,
@@ -131,7 +183,7 @@ function initItemMakers() {
             ),
             // DOWN
             new Doorway(
-                {x:x,y:y+1},
+                {x:x,y:y+2},
                 {x:x+1,y:y+2},
                 {x:x+1-(8-3), y:y+2},
                 {x:x+1-(8-3), y:y+1-7},
@@ -142,20 +194,72 @@ function initItemMakers() {
         ];
     });
 
+    // DULL BLUE: Cave entry
+    GB.LevelLoader.registerItem(0x3C4b6E, function(x, y, cxn) {
+        return [
+            // LEFT
+            new Doorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x+1-16, y:y+1-(8+3)},
+                {x:x+2, y:y+1-(8)},
+                false,
+                {x:16, y:16},
+                {x:16, y:16},
+                {x:x+2, y:y-21},
+                {x:x+16, y:y-7}
+            ),
+            // RIGHT
+            new Doorway(
+                {x:x+2,y:y},
+                {x:x+2,y:y+1},
+                {x:x+2, y:y+1-(8)},
+                {x:x+1-16, y:y+1-(8+3)},
+                true
+            )
+        ];
+    });
+
+    // DULL BLUE II: Cave exit
+    GB.LevelLoader.registerItem(0x2D3183, function(x, y, cxn) {
+        return [
+            // LEFT
+            new Doorway(
+                {x:x,y:y},
+                {x:x,y:y+1},
+                {x:x+1-16, y:y+1-(8+3)},
+                {x:x+2, y:y+1-(8)},
+                false
+            ),
+            // RIGHT
+            new Doorway(
+                {x:x+2,y:y},
+                {x:x+2,y:y+1},
+                {x:x+2, y:y+1-(8)},
+                {x:x+1-16, y:y+1-(8)},
+                true,
+                {x:16, y:16},
+                {x:16, y:16},
+                {x:x-29, y:y-7},
+                {x:x-15, y:y+7}
+            )
+        ];
+    });
+
     // BLUE: Regular horizontal doorway
     GB.LevelLoader.registerItem(0x0000FF, function(x, y, cxn) {
         return [
             // LEFT
             new Doorway(
                 {x:x,y:y},
-                {x:x+1,y:y+1},
+                {x:x,y:y+1},
                 {x:x+1-16, y:y+1-(8)},
                 {x:x+2, y:y+1-(8)},
                 false
             ),
             // RIGHT
             new Doorway(
-                {x:x+1,y:y},
+                {x:x+2,y:y},
                 {x:x+2,y:y+1},
                 {x:x+2, y:y+1-(8)},
                 {x:x+1-16, y:y+1-(8)},
@@ -171,7 +275,7 @@ function initItemMakers() {
             // LEFT
             new Doorway(
                 {x:x,y:y},
-                {x:x+1,y:y+1},
+                {x:x,y:y+1},
                 {x:x+1-16, y:y+1-(8+3)},
                 {x:x+2, y:y+1-(2)},
                 false,
@@ -180,7 +284,7 @@ function initItemMakers() {
             ),
             // RIGHT
             new Doorway(
-                {x:x+1,y:y},
+                {x:x+2,y:y},
                 {x:x+2,y:y+1},
                 {x:x+2, y:y+1-(2)},
                 {x:x+1-16, y:y+1-(8+3)},
@@ -217,7 +321,7 @@ function initItemMakers() {
         ];
     });
 
-    // RED-GRAY: Teleporting horizontal doorway (going up)
+    // RED-GRAY: Teleporting vertical doorway (going up)
     GB.LevelLoader.registerItem(0xAD7C8B, function(x, y, cxn) {
         return [
             // LEFT
@@ -230,7 +334,7 @@ function initItemMakers() {
         ];
     });
 
-    // RED-GRAY II: Teleporting horizontal doorway (going down)
+    // RED-GRAY II: Teleporting vertical doorway (going down)
     GB.LevelLoader.registerItem(0xC26F88, function(x, y, cxn) {
         return [
             // LEFT
@@ -255,14 +359,20 @@ function initItemMakers() {
 
     // GREEN: Button
     GB.LevelLoader.registerItem(0x00FF00, function(x, y, cxn, add) {
-        return [new Button(x, y, cxn, false, add === 0x000000? PS.COLOR_RED : add)];
+        return [new Button(x, y, cxn, false, false, add === 0x000000? PS.COLOR_RED : add)];
     });
 
     // DARK GREEN: Invisible button
     GB.LevelLoader.registerItem(0x007400, function(x, y, cxn) {
-        const button = new Button(x, y, cxn, true, 0x000000, "fx_beep", 0.5);
+        const button = new Button(x, y, cxn, true, false, 0x000000, "fx_beep", 0.5);
         new Invisibility(button);
+        new NameChange(button, "Well-Hidden Button");
         return [button];
+    });
+
+    // GREENISH: Tri button
+    GB.LevelLoader.registerItem(0x00F900, function(x, y, cxn, add) {
+        return [new Button(x, y, cxn, false, true, add === 0x000000? PS.COLOR_RED : add)];
     });
 
     // CYAN: Disappearing wall (toggleable)

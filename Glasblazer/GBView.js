@@ -4,6 +4,9 @@ GB.Loader.addLoad(
 
         class GBView {
             #view_position = {x: 0, y: 0};
+            #position_bound_lower = null;
+            #position_bound_upper = null;
+
             #default_bg = PS.COLOR_BLACK;
 
             setViewGrid(x_dim, y_dim, bg) {
@@ -24,6 +27,10 @@ GB.Loader.addLoad(
                 PS.statusColor(PS.COLOR_WHITE);
             }
 
+            centerOn(pos) {
+                this.setPosition({x: pos.x - (this.getWidth() / 2), y: pos.y - (this.getHeight() / 2)});
+            }
+
             setPosition(new_pos) {
                 let new_pos_conv;
                 if(Array.isArray(new_pos)){
@@ -33,9 +40,40 @@ GB.Loader.addLoad(
                     new_pos_conv = new_pos;
                 }
 
+                if(this.getIsBounded()) {
+                    new_pos_conv = {
+                        x: Math.min(Math.max(new_pos_conv.x, this.#position_bound_lower.x), this.#position_bound_upper.x),
+                        y: Math.min(Math.max(new_pos_conv.y, this.#position_bound_lower.y), this.#position_bound_upper.y)
+                    };
+                }
+
                 if(!GB.Utility.positionsEqual(new_pos_conv, this.#view_position)) {
                     this.#doMove(new_pos_conv);
                 }
+            }
+
+            getIsBounded() {
+                return this.#position_bound_lower !== null && this.#position_bound_upper !== null;
+            }
+
+            getLowerMoveBound() {
+                return this.#position_bound_lower;
+            }
+
+            getUpperMoveBound() {
+                return this.#position_bound_upper;
+            }
+
+            setMoveBounds(lower, upper) {
+                this.#position_bound_lower = lower;
+                this.#position_bound_upper = upper;
+
+                this.setPosition(this.#view_position);
+            }
+
+            clearMoveBounds() {
+                this.#position_bound_lower = null;
+                this.#position_bound_upper = null;
             }
 
             #doMove(new_pos) {

@@ -4,14 +4,20 @@ class SignalEvent extends GB.Event {
     }
 
     #frequency;
+    #tri;
 
-    constructor(freq) {
+    constructor(freq, tri = false) {
         super(SignalEvent.evType());
 
         this.#frequency = freq;
+        this.#tri = tri;
     }
 
     getFrequency() {
         return this.#frequency;
+    }
+
+    getIsTri() {
+        return this.#tri;
     }
 }

@@ -50,9 +50,19 @@ class TeleDoorway extends GB.AuraObject {
                 //PS.debug("Incoming: " + event.getFrequency().toString(16) + ". This: " + this.getFrequency().toString(16) + "\n");
                 //PS.debug((this.getPositionX() + off.x) + ", " + (this.getPositionY() + off.y) + "\n")
                 if(event.getFrequency() === this.#frequency) {
-                    const off = event.getOffset();
-                    event.getThingToMove().setPosition({x: this.getPositionX() + off.x, y: this.getPositionY() + off.y});
                     GB.View.setPosition(this.#after_view);
+
+                    const off = event.getOffset();
+                    event.getThingToMove().setPosition({
+                        x: this.getPositionX() + off.x,
+                        y: this.getPositionY() + off.y,
+                    });
+
+                    const door_off = Doorway.getOffset(event.getThingToMove());
+                    event.getThingToMove().setPosition({
+                        x: this.getPositionX() + door_off.x,
+                        y: this.getPositionY() + door_off.y,
+                    });
                 }
                 break;
         }
