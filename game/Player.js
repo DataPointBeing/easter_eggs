@@ -29,6 +29,8 @@ class Player extends GB.Object {
 
     static #easter_egged;
 
+    static #win_message = "You win! Final time:";
+
     constructor(x = 0, y = 0) {
         super("hero");
 
@@ -145,6 +147,10 @@ class Player extends GB.Object {
         return minutes + ":" + seconds;
     }
 
+    static finishTimeSeconds() {
+        return parseInt(GB.Clock.ticksToSeconds(Player.#final_time - Player.#timer_start));
+    }
+
     static causeToBeEgged() {
         this.#easter_egged = true;
         PS.audioStop(this.#sounds);
@@ -155,6 +161,10 @@ class Player extends GB.Object {
         if(!set) {
             this.#final_time = GB.Clock.getTicksElapsed();
         }
+    }
+
+    static setWinMessage(win) {
+        Player.#win_message = win;
     }
 
     static #updateStatus() {
@@ -171,7 +181,7 @@ class Player extends GB.Object {
         }
 
         if(!this.#timer_active && this.#final_time !== null) {
-            PS.statusText("You win! Final time: " + Player.finishTime());
+            PS.statusText(this.#win_message + " " + Player.finishTime());
             return;
         }
 

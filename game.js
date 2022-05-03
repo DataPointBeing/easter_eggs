@@ -389,6 +389,22 @@ function initItemMakers() {
         ];
     });
 
+    // BUBBLEGUM: Teleporting vertical doorway (going up)
+    GB.LevelLoader.registerItem(0xFFAFC7, function(x, y, cxn) {
+        return [
+            // LEFT
+            new TeleDoorway(
+                {x:x,y:y},
+                {x:x+1,y:y},
+                {x:x+1-(8), y:y+1},
+                cxn,
+                {x:16, y:16},
+                {x:18,y:7},
+                {x:32,y:21}
+            ),
+        ];
+    });
+
     // MUSTARD: Checkpoint (sets respawn point in case of death)
     GB.LevelLoader.registerItem(0xDBBD5E, function(x, y) {
         return [new Checkpoint(x, y)];
