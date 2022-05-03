@@ -14,6 +14,7 @@ PS.init = function(system, options) {
     PS.audioLoad("fx_coin3");
     PS.audioLoad("fx_shoot8");
     PS.audioLoad("fx_hoot");
+    PS.audioLoad("fx_wilhelm");
 
     PS.audioLoad("cave_loop", {path: "sounds/", fileTypes: ["wav"]});
 
@@ -415,6 +416,11 @@ function initItemMakers() {
         return [new DeathZone({x:x,y:y}, {x:x,y:y})];
     });
 
+    // MAGENTA-ISH: Easter egg zone (for the final secret)
+    GB.LevelLoader.registerItem(0xF200F3, function(x, y) {
+        return [new EasterEggFind({x:x,y:y}, {x:x+1,y:y})];
+    });
+
     // GREEN: Button
     GB.LevelLoader.registerItem(0x00FF00, function(x, y, cxn, add) {
         return [new Button(x, y, cxn, false, false, add === 0x000000? PS.COLOR_RED : add)];
@@ -527,6 +533,132 @@ function initItemMakers() {
         const lb = new LockBlock(x, y, cxn, add, 0, true);
         lb.setLabel("Inconspicuous Locked Block");
         return [lb];
+    });
+
+    // CLAY: Character C
+    GB.LevelLoader.registerItem(0xC12500, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:0, bottom:0}),
+            new Fragment(x+1, y, add, {top:10, left:0, right:0, bottom:0}),
+            new Fragment(x, y+1, add, {top:0, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:0, left:0, right:0, bottom:10})
+        ];
+    });
+
+    // CLAY: Character R
+    GB.LevelLoader.registerItem(0xC12501, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y, add, {top:10, left:0, right:32, bottom:10}),
+            new Fragment(x, y+1, add, {top:0, left:32, right:0, bottom:0}),
+            new Fragment(x+1, y+1, add, {top:0, left:8, right:8, bottom:0}, true)
+        ];
+    });
+
+    // CLAY: Character E
+    GB.LevelLoader.registerItem(0xC12502, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:0, bottom:5}),
+            new Fragment(x+1, y, add, {top:10, left:0, right:0, bottom:5}),
+            new Fragment(x, y+1, add, {top:5, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:5, left:0, right:0, bottom:10})
+        ];
+    });
+
+    // CLAY: Character A
+    GB.LevelLoader.registerItem(0xC12503, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:0, bottom:5}),
+            new Fragment(x+1, y, add, {top:10, left:0, right:32, bottom:5}),
+            new Fragment(x, y+1, add, {top:5, left:32, right:0, bottom:0}),
+            new Fragment(x+1, y+1, add, {top:5, left:0, right:32, bottom:0})
+        ];
+    });
+
+    // CLAY: Character T
+    GB.LevelLoader.registerItem(0xC12504, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:0, right:8, bottom:0}),
+            new Fragment(x+1, y, add, {top:10, left:8, right:0, bottom:0}),
+            new Fragment(x, y+1, add, {top:0, left:0, right:8, bottom:0}),
+            new Fragment(x+1, y+1, add, {top:0, left:8, right:0, bottom:0})
+        ];
+    });
+
+    // CLAY: Character D
+    GB.LevelLoader.registerItem(0xC12505, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:0, left:0, right:0, bottom:5}),
+            new Fragment(x+1, y, add, {top:0, left:0, right:32, bottom:5}),
+            new Fragment(x, y+1, add, {top:5, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:5, left:0, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character B
+    GB.LevelLoader.registerItem(0xC12506, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:4, bottom:5}),
+            new Fragment(x+1, y, add, {top:0, left:12, right:0, bottom:5}),
+            new Fragment(x, y+1, add, {top:5, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:5, left:0, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character Y
+    GB.LevelLoader.registerItem(0xC12507, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:0, left:32, right:0, bottom:5}),
+            new Fragment(x+1, y, add, {top:0, left:0, right:32, bottom:5}),
+            new Fragment(x, y+1, add, {top:5, left:0, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:5, left:0, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character O
+    GB.LevelLoader.registerItem(0xC12508, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:10, left:32, right:0, bottom:0}),
+            new Fragment(x+1, y, add, {top:10, left:0, right:32, bottom:0}),
+            new Fragment(x, y+1, add, {top:0, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:0, left:0, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character W
+    GB.LevelLoader.registerItem(0xC12509, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:0, left:32, right:8, bottom:0}),
+            new Fragment(x+1, y, add, {top:0, left:8, right:32, bottom:0}),
+            new Fragment(x, y+1, add, {top:0, left:32, right:8, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:0, left:8, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character L
+    GB.LevelLoader.registerItem(0xC1250A, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, {top:0, left:32, right:0, bottom:0}),
+            new Fragment(x, y+1, add, {top:0, left:32, right:0, bottom:10}),
+            new Fragment(x+1, y+1, add, {top:0, left:0, right:0, bottom:10})
+        ];
+    });
+
+    // CLAY: Character :)
+    GB.LevelLoader.registerItem(0xC1250B, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, 0, true, 50),
+            new Fragment(x+1, y, add, {top:10, left:0, right:32, bottom:0}),
+            new Fragment(x, y+1, add, 0, true, 50),
+            new Fragment(x+1, y+1, add, {top:0, left:0, right:32, bottom:10})
+        ];
+    });
+
+    // CLAY: Character .
+    GB.LevelLoader.registerItem(0xC1250C, function(x, y, cxn, add) {
+        return [
+            new Fragment(x, y, add, 0, true, 50)
+        ];
     });
 }
 

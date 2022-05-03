@@ -230,6 +230,7 @@ GB.Loader.addLoad(
             }
 
             getBackgroundColorAt(x, y) {
+                PS.debug(this.#map_colors[y][x].toString(16));
                 return this.#map_colors[y][x];
             }
 

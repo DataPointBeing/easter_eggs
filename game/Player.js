@@ -153,7 +153,7 @@ class Player extends GB.Object {
 
     static causeToBeEgged() {
         this.#easter_egged = true;
-        PS.audioStop(this.#sounds);
+        PS.audioPlay("fx_wilhelm", {volume: 0.3});
     }
 
     static setTimerActive(set) {
