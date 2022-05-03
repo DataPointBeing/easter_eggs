@@ -496,7 +496,7 @@ function initItemMakers() {
 
     // WARM YELLOW: The ambience of a tent.
     GB.LevelLoader.registerItem(0xF4C800, function(x, y) {
-        return [new Label(x, y, "How cozy.")];
+        return [new Label(x, y, "How cozy. And there's a note: \"WSNE\"...")];
     });
 
     // CRIMSON: A fire hazard.
