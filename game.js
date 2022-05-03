@@ -74,9 +74,19 @@ function initConduitMakers() {
         return GB.Conduit.get(RoomNameConduit, 0xFF5548, "Locksport", "Quad Candles");
     });
 
-    // BLUE-GRAY: Changes the room name (DOORWAY: QUAD CANDLES to WINNERS' GRIN)
+    // BLUE-GRAY: Changes the room name (DOORWAY: QUAD CANDLES to GROTTO)
     GB.LevelLoader.registerConduit(0x3F3B4E, function(x, y, cxn) {
-        return GB.Conduit.get(RoomNameConduit, 0x3F3B4E, "Quad Candles", "The Winner's Grin");
+        return GB.Conduit.get(RoomNameConduit, 0x3F3B4E,  "The Murmuring Grotto", "Quad Candles");
+    });
+
+    // SUPER PINK: Changes the room name (DOORWAY: GROTTO to PENULTIMATE)
+    GB.LevelLoader.registerConduit(0xFC18B9, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0xFC18B9, "Penultimate Sconces", "The Murmuring Grotto");
+    });
+
+    // CHAMOMILE: Changes the room name (DOORWAY: PENULTIMATE to ???)
+    GB.LevelLoader.registerConduit(0xBBD081, function(x, y, cxn) {
+        return GB.Conduit.get(RoomNameConduit, 0xBBD081, "???", "Penultimate Sconces");
     });
 
     // NAVY: Changes the room name (DOORWAY: 3 LAMPS to ???)
